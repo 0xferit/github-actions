@@ -1,5 +1,5 @@
 name: 'Conventional Commits Check'
-description: 'Validate that commit messages follow the conventional commits format'
+description: 'Validate that non-merge commit messages follow the conventional commits format'
 
 inputs:
   base-ref:
@@ -34,8 +34,8 @@ runs:
         # Optional scope in parentheses, optional breaking change indicator (!), required colon and space
         PATTERN='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert|seo)(\([a-zA-Z0-9_-]+\))?(!)?: .+'
 
-        # Get commit SHAs in range
-        COMMITS=$(git log --format='%H' "${BASE_REF}..${HEAD_REF}" 2>/dev/null)
+        # Get non-merge commit SHAs in range
+        COMMITS=$(git log --no-merges --format='%H' "${BASE_REF}..${HEAD_REF}" 2>/dev/null)
 
         if [[ -z "${COMMITS}" ]]; then
           echo "No commits found in range ${BASE_REF}..${HEAD_REF}"
